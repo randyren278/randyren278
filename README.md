@@ -2,4 +2,4 @@
 
 <img src="https://myreadme.vercel.app/api/embed/randyren278?panels=userstatistics,toprepositories,toplanguages,commitgraph" alt="reimaginedreadme" />
 
-![Snake animation](https://github.com/randyren278/github-readme/blob/output/github-contribution-snake.svg)
+![Snake animation](https://github.com/randyren278/randyren278/blob/output/github-contribution-snake.svg)
