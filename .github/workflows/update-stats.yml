@@ -42,7 +42,7 @@ jobs:
           done
 
           echo "Total commits (all-time, incl. private): $TOTAL"
-          FORMATTED=$(printf "%'d" "$TOTAL")
+          FORMATTED=$(echo "$TOTAL" | rev | sed 's/\(...\)/\1,/g' | rev | sed 's/^,//')
 
           mkdir -p .github/badges
           cat > .github/badges/commits.json <<JSON
