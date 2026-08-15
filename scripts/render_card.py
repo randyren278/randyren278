@@ -11,6 +11,9 @@ import calendar
 import datetime
 import html
 import textwrap
+from zoneinfo import ZoneInfo
+
+PACIFIC = ZoneInfo("America/Los_Angeles")
 
 ROSEPINE = {
     "bg": "#191724",
@@ -39,7 +42,7 @@ def age_parts(birth, today):
 
 
 def uptime_string():
-    today = datetime.datetime.now(datetime.timezone.utc).date()
+    today = datetime.datetime.now(PACIFIC).date()
     y, m, d = age_parts(BIRTHDATE, today)
     parts = []
     parts.append(f"{y} year{'s' if y != 1 else ''}")
@@ -64,7 +67,7 @@ def build_svg(args):
     text_w = W - text_x - PAD
 
     rows = [
-        ("who", f"{args.username}@github", None),
+        ("who", args.name, None),
         ("rule", "─" * 44, None),
         ("kv", "Role", args.role),
         ("kv", "Focus", args.focus),
@@ -72,7 +75,7 @@ def build_svg(args):
         ("kv", "Site", args.site),
         ("kv", "Uptime", uptime_string()),
         ("gap", "", None),
-        ("rule-label", "GitHub Stats — synced daily via Actions", None),
+        ("rule-label", "GitHub Stats", None),
         ("kv", "Commits", f"{args.commits:,} (all-time, incl. private)"),
         ("kv", "Lines", f"{args.loc_add + args.loc_del:,}  (+{args.loc_add:,} / -{args.loc_del:,})"),
     ]
@@ -143,7 +146,7 @@ def build_svg(args):
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--photo", required=True)
-    p.add_argument("--username", required=True)
+    p.add_argument("--name", required=True)
     p.add_argument("--role", required=True)
     p.add_argument("--focus", required=True)
     p.add_argument("--editor", required=True)
