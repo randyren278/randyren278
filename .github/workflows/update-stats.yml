@@ -1,0 +1,65 @@
+name: Update honest stats
+
+on:
+  schedule:
+    - cron: '17 4 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-stats:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compute total commit count (all years, incl. private)
+        env:
+          GH_TOKEN: ${{ secrets.STATS_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          CREATED_YEAR=$(gh api graphql -f query='
+            query { viewer { createdAt } }
+          ' --jq '.data.viewer.createdAt' | cut -c1-4)
+          CURRENT_YEAR=$(date -u +%Y)
+          TOTAL=0
+
+          for YEAR in $(seq "$CREATED_YEAR" "$CURRENT_YEAR"); do
+            YEAR_COMMITS=$(gh api graphql -f query='
+              query($from: DateTime!, $to: DateTime!) {
+                viewer {
+                  contributionsCollection(from: $from, to: $to) {
+                    totalCommitContributions
+                    restrictedContributionsCount
+                  }
+                }
+              }
+            ' -f from="${YEAR}-01-01T00:00:00Z" -f to="${YEAR}-12-31T23:59:59Z" \
+              --jq '.data.viewer.contributionsCollection | .totalCommitContributions + .restrictedContributionsCount')
+            TOTAL=$((TOTAL + YEAR_COMMITS))
+          done
+
+          echo "Total commits (all-time, incl. private): $TOTAL"
+          FORMATTED=$(printf "%'d" "$TOTAL")
+
+          mkdir -p .github/badges
+          cat > .github/badges/commits.json <<JSON
+          {
+            "schemaVersion": 1,
+            "label": "commits",
+            "message": "${FORMATTED}",
+            "color": "c4a7e7",
+            "labelColor": "191724",
+            "style": "flat-square"
+          }
+          JSON
+
+      - name: Commit badge data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .github/badges/commits.json
+          git diff --cached --quiet || git commit -m "chore: refresh commit-count badge"
+          git push
