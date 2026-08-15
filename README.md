@@ -18,7 +18,7 @@ Editor....... VS Code
 Site......... <a href="https://www.randyren.org/">randyren.org</a>
 
 GitHub Stats — synced daily via Actions ─────────
-Commits...... <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/randyren278/randyren278/main/.github/badges/commits.json&cacheSeconds=3600" height="15" align="absmiddle" alt="total commits" />
+Commits...... <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/randyren278/randyren278/main/.github/badges/commits.json&cacheSeconds=3600&v=2" height="15" align="absmiddle" alt="total commits" />
 
 <img src="assets/palette-rosepine.png" height="16" alt="Rosé Pine" />
 </pre>
