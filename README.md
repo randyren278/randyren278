@@ -1,11 +1,11 @@
 <table>
 <tr>
-<td valign="top" width="200">
+<td valign="middle" width="200" align="center">
 
-<img src="assets/avatar-ascii.jpg" width="190" alt="Randy Ren" />
+<img src="assets/avatar-ascii.jpg" width="180" height="180" alt="Randy Ren" />
 
 </td>
-<td valign="top">
+<td valign="middle">
 
 **Randy Ren** — [github.com/randyren278](https://github.com/randyren278)
 
